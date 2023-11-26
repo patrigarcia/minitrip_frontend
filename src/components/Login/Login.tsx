@@ -1,15 +1,18 @@
-import { FormEvent } from "react";
+import { useState, FormEvent } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
-import { mockLoginUser, RegistrationResponse } from "../../api/mockApi"; // Importa la función mock adecuada
-import { Box, Button, TextField, Typography, Paper, Alert } from "@mui/material";
-import { Link } from "react-router-dom";
-import logo from "../../assets/images/m.png";
-import backgroundImage from "../../assets/images/tiny.jpeg";
+import { mockLoginUser, RegistrationResponse } from "../../api/mockApi";
+import { Box, Button, Input, FormControl, FormLabel, Image, VStack, Text, useToast, Card } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
+import logo from "../../assets/images/logo.png";
+import logo2 from "../../assets/images/m.png";
 
 const Login = () => {
     const navigate = useNavigate();
-    const { mutate, isLoading, isError, error } = useMutation<RegistrationResponse, Error, { email: string; password: string }>(mockLoginUser, {
+    const toast = useToast();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const { mutate, isLoading } = useMutation<RegistrationResponse, Error, { email: string; password: string }>(mockLoginUser, {
         onSuccess: (data) => {
             localStorage.setItem("token", data.token);
             localStorage.setItem("user", JSON.stringify(data.user));
@@ -17,59 +20,61 @@ const Login = () => {
         },
         onError: (err) => {
             console.error(err);
+            toast({
+                title: "Login error",
+                description: err.message,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
         },
     });
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (event: FormEvent<HTMLDivElement>) => {
         event.preventDefault();
-        const formData = new FormData(event.currentTarget);
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-
         mutate({ email, password });
     };
 
-    const backgroundStyle = { position: "absolute", height: "60%", width: "60%" };
-    const logoStyle = { position: "absolute", top: "7%", left: "5%", width: "100%" };
-    const paperStyle = { padding: 3, borderRadius: 2, marginLeft: "50%" };
-    const formTextStyle = { my: 1 };
-
     return (
-        <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Box sx={{ ...logoStyle, top: "7%", left: "7.5%" }}>
-                <img src={logo} alt="Logo" style={{ width: "10%" }} />
-            </Box>
-            <Box sx={{ ...backgroundStyle, top: "30%", left: "8%" }}>
-                <img src={backgroundImage} alt="Background" style={{ height: "50vh", width: "auto" }} />
-            </Box>
-            <Paper elevation={3} sx={{ ...paperStyle, width: "30%" }}>
-                <Box component="form" onSubmit={handleSubmit} sx={{ "& .MuiTextField-root": formTextStyle }}>
-                    <Typography variant="h5" component="h1" gutterBottom sx={{ fontSize: "1.5em", fontWeight: "bold" }}>
-                        Log in
-                    </Typography>
+        <Card minHeight="100vh" display="flex" alignItems="center" justifyContent="center" position="relative">
+            <Image position="absolute" top="5vh" left="5vw" src={logo2} alt="Logo2" w="8%" />
+            <Box as="form" onSubmit={handleSubmit} p={2} borderRadius="2%" boxShadow="0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.06)" w="30%" position="relative" h="auto">
+                <VStack fontFamily="Raleway" p="3%">
+                    <Box>
+                        <Image position="relative" top="1vh" left="7vw" src={logo} alt="Logo" w="50%" mb="3vh" />
+                    </Box>
 
-                    <Typography variant="subtitle1" gutterBottom>
+                    <Text fontSize="1.5em" fontWeight="bold">
+                        Log in
+                    </Text>
+
+                    <Text fontSize="0.8em" mb="3vh">
                         Enter your login credentials to continue
-                    </Typography>
-                    <TextField required id="email" name="email" label="Email" type="email" fullWidth variant="outlined" />
-                    <TextField required id="password" name="password" label="Password" type="password" fullWidth variant="outlined" />
-                    <Button type="submit" variant="contained" sx={{ mt: 2, mb: 1, bgcolor: "#6EE4C2", "&:hover": { bgcolor: "#61C9AB" } }} fullWidth disabled={isLoading}>
-                        {isLoading ? "Logging In..." : "Log in"}
+                    </Text>
+
+                    <FormControl id="email" isRequired>
+                        <FormLabel>Email</FormLabel>
+                        <Input name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    </FormControl>
+
+                    <FormControl id="password" isRequired mb="3vh">
+                        <FormLabel>Password</FormLabel>
+                        <Input name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    </FormControl>
+
+                    <Button type="submit" bgColor="#CBB57B" color="white" isLoading={isLoading} w="full" _hover={{ bgColor: "#AB9867" }}>
+                        Log in
                     </Button>
-                </Box>
-                {isError && error && (
-                    <Alert severity="error" sx={{ mt: 2 }}>
-                        There was an issue logging in: {error.message}
-                    </Alert>
-                )}
-                <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
+                </VStack>
+
+                <Text mt={2} textAlign="center" fontSize="sm" fontFamily="Raleway" mb="3vh">
                     Don't have an account?{" "}
-                    <Link to="/register" style={{ color: "#008080" }}>
+                    <RouterLink to="/register" style={{ color: "#AB9867", fontWeight: "bold" }}>
                         Sign up
-                    </Link>
-                </Typography>
-            </Paper>
-        </Box>
+                    </RouterLink>
+                </Text>
+            </Box>
+        </Card>
     );
 };
 

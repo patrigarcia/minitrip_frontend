@@ -1,4 +1,4 @@
-import Box from "@mui/system/Box";
+import { Box } from "@chakra-ui/react";
 
 // import { Link, isRouteErrorResponse, useRouteError } from "react-router-dom";
 

@@ -1,15 +1,15 @@
-// Register.tsx
-import React, { FormEvent } from "react";
+import { FormEvent } from "react";
 import { useMutation } from "react-query";
 import { useNavigate } from "react-router-dom";
 import { mockRegisterUser, UserRegistration, RegistrationResponse } from "../../api/mockApi";
-import { Box, Button, TextField, Typography, Paper, Alert } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Button, Input, FormControl, FormLabel, VStack, Text, Image, useToast } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
 import logo from "../../assets/images/m.png";
-import backgroundImage from "../../assets/images/tiny.jpeg";
+import backgroundImage from "../../assets/images/logo.png";
 
 const Register = () => {
     const navigate = useNavigate();
+    const toast = useToast();
 
     const { mutate, isLoading, isError, error } = useMutation<RegistrationResponse, Error, UserRegistration>(mockRegisterUser, {
         onSuccess: (data) => {
@@ -18,6 +18,13 @@ const Register = () => {
         },
         onError: (err) => {
             console.error(err);
+            toast({
+                title: "Error",
+                description: `There was an issue signing up: ${err.message}`,
+                status: "error",
+                duration: 9000,
+                isClosable: true,
+            });
         },
     });
 
@@ -31,46 +38,55 @@ const Register = () => {
         mutate({ name, email, password });
     };
 
-    const backgroundStyle = { position: "absolute", height: "60%", width: "60%" };
-    const logoStyle = { position: "absolute", top: "7%", left: "5%", width: "100%" };
-    const paperStyle = { padding: 3, borderRadius: 2, marginLeft: "50%" };
-    const formTextStyle = { my: 1 };
-
     return (
-        <Box sx={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            <Box sx={{ ...logoStyle, top: "7%", left: "7.5%" }}>
-                <img src={logo} alt="Logo" style={{ width: "7%" }} />
-            </Box>
-            <Box sx={{ ...backgroundStyle, top: "30%", left: "8%" }}>
-                <img src={backgroundImage} alt="Background" style={{ height: "50vh", width: "auto" }} />
-            </Box>
-            <Paper elevation={3} sx={{ ...paperStyle, width: "30%" }}>
-                <Box component="form" onSubmit={handleSubmit} sx={{ "& .MuiTextField-root": formTextStyle }}>
-                    <Typography variant="h5" component="h1" gutterBottom sx={{ fontSize: "1.5em", fontWeight: "bold" }}>
+        <Box minHeight="100vh" display="flex" alignItems="center" justifyContent="center" position="relative">
+            <Image position="absolute" top="5vh" left="5vw" src={logo} alt="Logo" w="8%" />
+
+            <Box p={3} borderRadius="lg" bg="white" shadow="md" width="30%" position="relative" as="form" onSubmit={handleSubmit} h="auto">
+                <VStack fontFamily="Raleway" p="3%">
+                    <Box mb="10vh">
+                        <Image position="absolute" top="3%" left="25%" src={backgroundImage} alt="Background" w="50%" objectFit="cover" />
+                    </Box>
+                    <Text fontSize="2xl" fontWeight="bold">
                         Sign Up
-                    </Typography>
-                    <Typography variant="subtitle1" gutterBottom>
+                    </Text>
+                    <Text fontSize="0.9em" mb="3vh">
                         Enter your details to create an account
-                    </Typography>
-                    <TextField required id="name" name="name" label="Name" type="text" fullWidth variant="outlined" />
-                    <TextField required id="email" name="email" label="Email" type="email" fullWidth variant="outlined" />
-                    <TextField required id="password" name="password" label="Password" type="password" fullWidth variant="outlined" />
-                    <Button type="submit" variant="contained" sx={{ mt: 2, mb: 1, bgcolor: "#6EE4C2", "&:hover": { bgcolor: "#61C9AB" } }} fullWidth disabled={isLoading}>
-                        {isLoading ? "Signing Up..." : "Sign Up"}
+                    </Text>
+
+                    <FormControl id="name" isRequired>
+                        <FormLabel>Name</FormLabel>
+                        <Input name="name" type="text" />
+                    </FormControl>
+
+                    <FormControl id="email" isRequired>
+                        <FormLabel>Email</FormLabel>
+                        <Input name="email" type="email" />
+                    </FormControl>
+
+                    <FormControl id="password" isRequired mb="3vh">
+                        <FormLabel>Password</FormLabel>
+                        <Input name="password" type="password" />
+                    </FormControl>
+
+                    <Button type="submit" bgColor="#CBB57B" color="white" isLoading={isLoading} w="full" _hover={{ bgColor: "#AB9867" }}>
+                        Sign Up
                     </Button>
-                </Box>
+                </VStack>
+
                 {isError && error && (
-                    <Alert severity="error" sx={{ mt: 2 }}>
+                    <Text color="red.500" mt={2}>
                         There was an issue signing up: {error.message}
-                    </Alert>
+                    </Text>
                 )}
-                <Typography variant="body2" sx={{ mt: 2, textAlign: "center" }}>
+
+                <Text mt={2} textAlign="center" fontSize="0.9em">
                     Already have an account?{" "}
-                    <Link to="/login" style={{ color: "#008080" }}>
+                    <RouterLink to="/login" style={{ color: "#AB9867", fontWeight: "bold" }}>
                         Log in
-                    </Link>
-                </Typography>
-            </Paper>
+                    </RouterLink>
+                </Text>
+            </Box>
         </Box>
     );
 };
