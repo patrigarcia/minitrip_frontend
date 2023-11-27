@@ -1,5 +1,6 @@
-import { Box } from "@chakra-ui/react";
 import React, { useState } from "react";
+import { Input, List, ListItem, ListIcon, Box } from "@chakra-ui/react";
+import { MdLocationOn } from "react-icons/md";
 
 const cities = [
     "Madrid",
@@ -73,14 +74,17 @@ const SearchBar: React.FC = () => {
     };
 
     return (
-        <Box>
-            <input type="text" value={inputValue} onChange={handleChange} placeholder="Adonde quieres ir?" />
+        <Box w="20vw" mr="2vw">
+            <Input type="text" value={inputValue} onChange={handleChange} placeholder="Adonde quieres ir?" mb={2} bgColor="white" />
             {suggestions.length > 0 && (
-                <ul>
+                <List spacing={2}>
                     {suggestions.map((city) => (
-                        <li key={city}>{city}</li>
+                        <ListItem key={city} p={2} bg="gray.100" borderRadius="md">
+                            <ListIcon as={MdLocationOn} color="green.500" />
+                            {city}
+                        </ListItem>
                     ))}
-                </ul>
+                </List>
             )}
         </Box>
     );
