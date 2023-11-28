@@ -69,7 +69,7 @@ const Register = () => {
                         <Input name="password" type="password" />
                     </FormControl>
 
-                    <Button type="submit" bgColor="#CBB57B" color="white" isLoading={isLoading} w="full" _hover={{ bgColor: "#AB9867" }}>
+                    <Button type="submit" bgColor="#D2C397" color="white" isLoading={isLoading} w="full" _hover={{ bgColor: "#D0BD85" }}>
                         Sign Up
                     </Button>
                 </VStack>
@@ -82,7 +82,7 @@ const Register = () => {
 
                 <Text mt={2} textAlign="center" fontSize="0.9em">
                     Already have an account?{" "}
-                    <RouterLink to="/login" style={{ color: "#AB9867", fontWeight: "bold" }}>
+                    <RouterLink to="/login" style={{ color: "#D0BD85", fontWeight: "bold" }}>
                         Log in
                     </RouterLink>
                 </Text>

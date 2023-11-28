@@ -62,14 +62,14 @@ const Login = () => {
                         <Input name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </FormControl>
 
-                    <Button type="submit" bgColor="#CBB57B" color="white" isLoading={isLoading} w="full" _hover={{ bgColor: "#AB9867" }}>
+                    <Button type="submit" bgColor="#D2C397" color="white" isLoading={isLoading} w="full" _hover={{ bgColor: "#D0BD85" }}>
                         Log in
                     </Button>
                 </VStack>
 
                 <Text mt={2} textAlign="center" fontSize="sm" fontFamily="Raleway" mb="3vh">
                     Don't have an account?{" "}
-                    <RouterLink to="/register" style={{ color: "#AB9867", fontWeight: "bold" }}>
+                    <RouterLink to="/register" style={{ color: "#D0BD85", fontWeight: "bold" }}>
                         Sign up
                     </RouterLink>
                 </Text>
