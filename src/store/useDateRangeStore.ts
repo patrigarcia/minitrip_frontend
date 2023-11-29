@@ -1,6 +1,6 @@
-import create from "zustand";
+import { create } from "zustand";
 
-// Definir los tipos para el estado y las acciones de tu store
+
 type DateRangeState = {
     startDate: Date | null;
     endDate: Date | null;
@@ -8,7 +8,7 @@ type DateRangeState = {
     setEndDate: (date: Date | null) => void;
 };
 
-// Crear el store con los tipos definidos
+
 const useDateRangeStore = create<DateRangeState>((set) => ({
     startDate: null,
     endDate: null,

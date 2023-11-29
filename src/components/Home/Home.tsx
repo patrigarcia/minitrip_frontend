@@ -1,3 +1,4 @@
+import Booker from "../Booker/Booker";
 import Carousel from "../Carousel/Carousel";
 import Navbar from "../Navbar/Navbar";
 
@@ -7,6 +8,8 @@ const Home = () => {
             <Navbar />
 
             <Carousel />
+
+            <Booker />
         </>
     );
 };

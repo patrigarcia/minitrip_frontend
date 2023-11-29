@@ -73,13 +73,18 @@ const SearchBar: React.FC = () => {
         }
     };
 
+    const handleSuggestionClick = (city: string) => {
+        setInputValue(city);
+        setSuggestions([]);
+    };
+
     return (
-        <Box w="20vw" mr="2vw">
-            <Input type="text" value={inputValue} onChange={handleChange} placeholder="Adonde quieres ir?" mb={2} bgColor="white" />
+        <Box w="20vw" mr="2%">
+            <Input type="text" value={inputValue} onChange={handleChange} placeholder="Adonde quieres ir?" mb={1} bgColor="white" />
             {suggestions.length > 0 && (
                 <List spacing={2}>
                     {suggestions.map((city) => (
-                        <ListItem key={city} p={2} bg="gray.100" borderRadius="md">
+                        <ListItem key={city} p={2} bg="gray.100" borderRadius="md" cursor="pointer" _hover={{ bg: "gray.200" }} onClick={() => handleSuggestionClick(city)}>
                             <ListIcon as={MdLocationOn} color="green.500" />
                             {city}
                         </ListItem>

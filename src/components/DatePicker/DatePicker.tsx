@@ -8,7 +8,7 @@ const CustomDatePicker: React.FC = () => {
     const { startDate, endDate, setStartDate, setEndDate } = useDateRangeStore();
 
     return (
-        <Box bgColor="white" p="5px" borderRadius="5px" border="2px" borderColor="gray.100" w="15vw">
+        <Box bgColor="white" p="6px" borderRadius="5px" border="2px" borderColor="gray.100" w="20vw">
             <DatePicker
                 selectsRange
                 startDate={startDate}

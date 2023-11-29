@@ -1,5 +1,4 @@
-
-import create from 'zustand'
+import { create } from 'zustand';
 
 interface TagState {
   tags: string[];
@@ -15,6 +14,6 @@ const useStore = create<TagState>((set) => ({
   addTag: (tag) => set((state) => ({ tags: [...state.tags, tag] })),
   removeTag: (tagToRemove) => set((state) => ({ tags: state.tags.filter(tag => tag !== tagToRemove) })),
   setInputTag: (inputTag) => set({ inputTag }),
-}))
+}));
 
 export default useStore;
